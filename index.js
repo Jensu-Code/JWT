@@ -1,4 +1,15 @@
-import app from './app.js'
-import { PORT_SERVER } from './config.js';
+import app from "./app.js";
+import { PORT_SERVER } from "./config.js";
 
-app.listen(PORT_SERVER,()=>{console.log(`listen on port: http://localhost:${PORT_SERVER}`)} );
+async function main() {
+  try {
+    app.listen(PORT_SERVER, () => {
+      console.log(`Escuchando en el puerto: http://localhost:${PORT_SERVER}`);
+    });
+  } catch (error) {
+    console.error("Error al iniciar la aplicación:", error);
+    process.exit(1);
+  }
+}
+
+main();

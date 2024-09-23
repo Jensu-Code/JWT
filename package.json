@@ -13,8 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "express": "4.21.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "9.0.2",
     "morgan": "1.10.0",
     "mysql2": "3.11.3",
     "zod": "3.23.8"
@@ -23,18 +24,5 @@
     "@types/bcryptjs": "^2.4.6",
     "eslint-plugin-promise": "^6.6.0",
     "standard": "17.1.2"
-  },
-  "eslintConfig": {
-    "extends": [
-      "standard",
-      "plugin:promise/recommended"
-    ],
-    "plugins": [
-      "promise"
-    ],
-    "rules": {
-      "promise/always-return": "error",
-      "promise/catch-or-return": "error"
-    }
   }
 }

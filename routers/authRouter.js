@@ -1,11 +1,14 @@
-import { Router} from 'express'
-import { register, login } from '../controllers/authController.js';
+import { Router } from "express";
+import { register, login , logout, profile } from "../controllers/authController.js";
+import { authRequired } from "../middlewares/validateToken.js";
+import { validateSchema,validateUserCreate } from "../middlewares/validateUser.js";
+export function createAuthController() {
+  const authRouter = Router()
 
-export function createAuthController(){
-    const authRouter = Router();
+  authRouter.post("/login",validateSchema,login)
+  authRouter.post("/register",validateUserCreate,register)
+  authRouter.post("/logout",logout)
+  authRouter.get('/profile',authRequired ,profile)
 
-    authRouter.post('/login', login)
-    authRouter.post('/register', register);
-
-    return authRouter;
+  return authRouter
 }
