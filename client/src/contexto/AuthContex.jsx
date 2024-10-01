@@ -17,15 +17,20 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [validateErrors, setValidateErrors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isLogin,setIsLogin]= useState(false);
   const signup = async (user) => {
     try {
       const response = await registerRequest(user);
       console.log("respuesta del Api: ", response);
+      setLoading(true)
       setUser(response);
       setIsAuthenticated(true);
+      setIsLogin(true);
     } catch (error) {
       const dataError = await error.message;
       setValidateErrors(dataError.split(","));
+      setLoading(false);
+      setIsLogin(false);
       //console.log("error response: ",error);
     }
   };
@@ -35,10 +40,19 @@ export const AuthProvider = ({ children }) => {
       console.log("Usuario logueado: ", response);
       setUser(response);
       setIsAuthenticated(true);
+      setIsLogin(true);
+
     } catch (error) {
       setValidateErrors(error.message.split(","));
     }
   };
+
+  const logout = ()=>{
+    Cookies.remove("token");
+    setIsAuthenticated(false);
+    setIsLogin(false);
+    setUser(null);
+  }
   useEffect(() => {
     if (validateErrors.length > 0) {
       const timer = setTimeout(() => {
@@ -64,10 +78,16 @@ export const AuthProvider = ({ children }) => {
         } finally {
           setLoading(false); // Esto asegura que loading se detenga después de la validación
         }
-      } else {
-        console.log("No existing cookies");
-        setLoading(false); // Si no hay cookies, también debes cambiar el estado de loading
-        setIsAuthenticated(false);
+      } else{
+        if(isLogin){
+          console.log("No hay cookie pero si me he logueado");
+           setIsAuthenticated(true)
+        }else{
+          setIsLogin(false)
+          setLoading(false); 
+          setIsAuthenticated(false)
+        }
+       // Esto asegura que loading se det
       }
     };
   
@@ -78,10 +98,12 @@ export const AuthProvider = ({ children }) => {
       value={{
         signup,
         signin,
+        logout,
         user,
         isAuthenticated,
         validateErrors,
-        loading
+        loading,
+        isLogin
       }}
     >
       {children}

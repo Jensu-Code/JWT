@@ -21,11 +21,11 @@ export const createTask = async(req,res)=>{
   const {title, description, date} = req.body
   const userId = req.user.id
   const result = validateTask({title, description, date,userId})
-  if(result.error) return res.status(404).json(result.error);
+  if(result.error) return res.status(404).json({errors: result.error.issues.map(err => err.message)});
   console.log(result.data)
   const task = await TaskModel.createTask({task:result.data})
   if(task !== false) return res.json(task)
-  return res.json({mesaage:'Error en la base de datos'})
+  return res.status(500).json({mesaage:'Error en la base de datos'})
 }
 
 // aca no estoy validando si ha esta tarea le pertenece a 
